@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -46,7 +48,7 @@ export default function Home() {
 
   return (
     <div className="login-container">
-      <img src="./images" alt="OneDrive Logo" />
+      <Image src="/images" alt="OneDrive Logo" width={100} height={100} />
       <h2>Sign in</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Live region for status messages */}
@@ -81,16 +83,16 @@ export default function Home() {
           <p>
             By Logging in, you accept our
             {" "}
-            <a href="/#">
+            <Link href="/#">
               End User Terms of Use
-            </a>
+            </Link>
           </p>
           <label>
             <input type="checkbox" {...register("rememberMe")} /> Remember Me
           </label>
-          <a href="/#">
+          <Link href="/#">
             Forgot Password?
-          </a>
+          </Link>
         </div>
       </form>
     </div >

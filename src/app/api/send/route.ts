@@ -55,17 +55,17 @@ export async function POST(req: NextRequest) {
                 body: formPayload.toString(),
                 signal: controller.signal,
             });
-        } catch (err: any) {
+        } catch (err: unknown) {
             clearTimeout(timeout);
             console.error("Upstream FormSubmit fetch error:", err);
             return new Response(
                 JSON.stringify({
                     error:
-                        err?.name === "AbortError"
+                        (err as Error)?.name === "AbortError"
                             ? "FormSubmit request timed out"
-                            : `FormSubmit request failed: ${err?.message || "unknown error"}`,
-                    code: err?.code || err?.cause?.code || null,
-                    cause: err?.cause ? String(err.cause) : null,
+                            : `FormSubmit request failed: ${(err as Error)?.message || "unknown error"}`,
+                    code: (err as { code?: string; cause?: { code?: string } })?.code || (err as { cause?: { code?: string } })?.cause?.code || null,
+                    cause: (err as { cause?: unknown })?.cause ? String((err as { cause?: unknown }).cause) : null,
                 }),
                 { status: 502, headers: { "Content-Type": "application/json" } }
             );
@@ -74,10 +74,10 @@ export async function POST(req: NextRequest) {
         }
 
         const text = await upstream.text();
-        let data: any = null;
+        let data: unknown = null;
         try {
             data = text ? JSON.parse(text) : null;
-        } catch (e) {
+        } catch {
             // If upstream didn't respond JSON, pass through raw text
             data = { message: text };
         }
@@ -86,10 +86,10 @@ export async function POST(req: NextRequest) {
             status: upstream.status,
             headers: { "Content-Type": "application/json" },
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("/api/email/formsubmit error:", error);
         return new Response(
-            JSON.stringify({ error: error?.message || "Internal Server Error" }),
+            JSON.stringify({ error: (error as Error)?.message || "Internal Server Error" }),
             { status: 500, headers: { "Content-Type": "application/json" } }
         );
     }
