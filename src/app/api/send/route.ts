@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 
-// Ensure this route runs on the Node.js runtime (not Edge) for wider network compatibility
-export const runtime = "nodejs";
+// Run this route on the Edge runtime to be compatible with Cloudflare Pages
+export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
     try {
